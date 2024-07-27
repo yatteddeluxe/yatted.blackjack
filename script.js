@@ -1,8 +1,39 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     let deck, dealerHand, dealerScore, bankroll = 1000, currentBet;
-    let players = []; // Array to hold player data
-    let numPlayers = 1; // Default to 1 player for now
-    let currentPlayerIndex = 0; // Index to keep track of whose turn it is
+    let players = [];
+    let numPlayers = 0;
+    let currentPlayerIndex = 0;
+    const usernameForm = document.getElementById('username-form');
+    const usernameInput = document.getElementById('username');
+    const playerList = document.getElementById('player-list');
+    const startGameButton = document.getElementById('start-game');
+    const waitingRoom = document.getElementById('waiting-room');
+    const gameContainer = document.getElementById('game');
+    
+    // Player registration
+    usernameForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let username = usernameInput.value.trim();
+        if (username && !players.some(player => player.username === username)) {
+            players.push({ username, hand: [], score: 0, bet: 0 });
+            numPlayers = players.length;
+            updatePlayerList();
+            usernameInput.value = '';
+            if (numPlayers > 1) {
+                startGameButton.disabled = false;
+            }
+        }
+    });
+
+    function updatePlayerList() {
+        playerList.innerHTML = players.map(player => `<li>${player.username}</li>`).join('');
+    }
+
+    startGameButton.addEventListener('click', () => {
+        waitingRoom.style.display = 'none';
+        gameContainer.style.display = 'block';
+        startGame();
+    });
 
     function createDeck() {
         let suits = ['hearts', 'diamonds', 'clubs', 'spades'];
@@ -55,17 +86,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
         playersContainer.innerHTML = ''; // Clear existing players
 
         for (let i = 0; i < numPlayers; i++) {
-            players[i] = {
-                hand: [],
-                score: 0,
-                bet: 0
-            };
+            players[i].hand = [];
+            players[i].score = 0;
 
             const playerDiv = document.createElement('div');
             playerDiv.classList.add('player');
             playerDiv.id = `player-${i}`;
             playerDiv.innerHTML = `
-                <h2>Player ${i + 1}</h2>
+                <h2>${players[i].username}</h2>
                 <div class="hand" id="player-${i}-cards"></div>
                 <div id="player-${i}-score"></div>
             `;
@@ -125,6 +153,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
             currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
             updateUI();
         }
+    }
+
+    function startGame() {
+        deck = shuffleDeck(createDeck());
+        setupPlayers();
+        dealInitialCards();
+        document.getElementById('btn-hit').disabled = false;
+        document.getElementById('btn-stand').disabled = false;
+        document.getElementById('btn-deal').disabled = true;
     }
 
     document.getElementById('btn-deal').addEventListener('click', () => {
