@@ -71,3 +71,29 @@ button {
 button:disabled {
     background-color: #404040; /* Disabled button color */
 }
+
+#waiting-room {
+    text-align: center;
+}
+
+#waiting-room form {
+    margin: 20px 0;
+}
+
+#waiting-room #player-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#waiting-room #player-list li {
+    margin: 5px 0;
+}
+
+#waiting-room #start-game {
+    margin-top: 20px;
+}
+
+#game {
+    display: none;
+}
+
