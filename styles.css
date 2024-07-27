@@ -1,17 +1,17 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #008000;
-    color: white;
+    background-color: grey; /* Changed to grey */
+    color: black; /* Changed to black */
 }
 
 #game {
     margin: 20px auto;
     padding: 20px;
-    border: 2px solid #000;
+    border: 2px solid #000; /* Left unchanged */
     border-radius: 10px;
     max-width: 600px;
-    background-color: #006400;
+    background-color: grey; /* Changed to grey */
 }
 
 .hand {
@@ -28,8 +28,8 @@ body {
     padding: 10px;
     border: 1px solid #fff;
     border-radius: 5px;
-    background-color: #fff;
-    color: #000;
+    background-color: #fff; /* Left unchanged */
+    color: #000; /* Left unchanged */
     width: 50px;
     height: 70px;
     display: flex;
