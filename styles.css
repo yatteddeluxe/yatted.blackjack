@@ -74,3 +74,25 @@ h1, h2 {
     margin: 10px 0;
     color: #ffffff; /* White text for headings */
 }
+
+#players {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.player {
+    margin-bottom: 20px;
+}
+
+.player .hand {
+    background-color: #4e4e4e;
+    border-radius: 5px;
+}
+
+.player .cards {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
