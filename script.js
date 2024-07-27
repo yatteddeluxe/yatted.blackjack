@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function dealInitialCards() {
-        console.log("Dealing initial cards");
         playerHand = [deck.pop(), deck.pop()];
         dealerHand = [deck.pop(), deck.pop()];
         updateScores();
@@ -70,11 +69,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         document.getElementById('player-score').innerText = `Score: ${playerScore}`;
         document.getElementById('dealer-score').innerText = `Score: ${dealerScore}`;
         document.getElementById('bankroll').innerText = `Bankroll: $${bankroll}`;
-        console.log("UI Updated");
     }
 
     function checkForEndOfGame() {
-        console.log("Checking for end of game");
         if (playerScore > 21) {
             document.getElementById('status').innerText = 'Player busts! Dealer wins.';
             bankroll -= currentBet;
@@ -103,7 +100,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function endGame() {
-        console.log("End of game");
         document.getElementById('btn-hit').disabled = true;
         document.getElementById('btn-stand').disabled = true;
         document.getElementById('btn-deal').disabled = false;
@@ -111,7 +107,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     document.getElementById('btn-deal').addEventListener('click', () => {
-        console.log("Deal button clicked");
         currentBet = parseInt(document.getElementById('bet-amount').value);
         if (currentBet > bankroll) {
             document.getElementById('status').innerText = 'Insufficient funds!';
@@ -126,7 +121,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     document.getElementById('btn-hit').addEventListener('click', () => {
-        console.log("Hit button clicked");
         playerHand.push(deck.pop());
         updateScores();
         updateUI();
@@ -134,7 +128,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     document.getElementById('btn-stand').addEventListener('click', () => {
-        console.log("Stand button clicked");
         while (dealerScore < 17) {
             dealerHand.push(deck.pop());
             updateScores();
