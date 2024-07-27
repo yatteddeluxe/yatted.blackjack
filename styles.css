@@ -1,145 +1,79 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-    let deck, playerHand, dealerHand, playerScore, dealerScore, bankroll = 1000, currentBet;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2b2b2b; /* Dark grey background */
+    color: #ffffff; /* White text for good contrast */
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
 
-    function createDeck() {
-        let suits = ['hearts', 'diamonds', 'clubs', 'spades'];
-        let values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-        let deck = [];
-        for (let suit of suits) {
-            for (let value of values) {
-                deck.push({ value, suit });
-            }
-        }
-        return deck;
-    }
+#game {
+    display: inline-block;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #3d3d3d; /* Slightly lighter grey for the table */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
 
-    function shuffleDeck(deck) {
-        for (let i = deck.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1));
-            [deck[i], deck[j]] = [deck[j], deck[i]];
-        }
-        return deck;
-    }
+#status {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
 
-    function getCardValue(card) {
-        if (['J', 'Q', 'K'].includes(card.value)) {
-            return 10;
-        } else if (card.value === 'A') {
-            return 11;
-        } else {
-            return parseInt(card.value);
-        }
-    }
+#bankroll, #betting, .hand, #controls {
+    margin: 10px 0;
+}
 
-    function calculateHandValue(hand) {
-        let value = 0;
-        let aceCount = 0;
-        for (let card of hand) {
-            value += getCardValue(card);
-            if (card.value === 'A') {
-                aceCount++;
-            }
-        }
-        while (value > 21 && aceCount > 0) {
-            value -= 10;
-            aceCount--;
-        }
-        return value;
-    }
+.hand {
+    padding: 10px;
+    background-color: #4e4e4e; /* Another shade of grey for contrast */
+    border-radius: 5px;
+}
 
-    function dealInitialCards() {
-        console.log("Dealing initial cards");
-        playerHand = [deck.pop(), deck.pop()];
-        dealerHand = [deck.pop(), deck.pop()];
-        updateScores();
-        updateUI();
-    }
+.cards {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
 
-    function updateScores() {
-        playerScore = calculateHandValue(playerHand);
-        dealerScore = calculateHandValue(dealerHand);
-    }
+.card {
+    width: 50px;
+    height: 70px;
+    margin: 0 5px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+}
 
-    function getCardImage(card) {
-        return `images/cards/${card.value}_of_${card.suit}.png`;
-    }
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #606060; /* Dark grey for buttons */
+    color: #ffffff; /* White text for buttons */
+    cursor: pointer;
+    font-size: 1em;
+}
 
-    function updateUI() {
-        document.getElementById('player-cards').innerHTML = playerHand.map(card => `<div class="card" style="background-image: url('${getCardImage(card)}');"></div>`).join('');
-        document.getElementById('dealer-cards').innerHTML = dealerHand.map(card => `<div class="card" style="background-image: url('${getCardImage(card)}');"></div>`).join('');
-        document.getElementById('player-score').innerText = `Score: ${playerScore}`;
-        document.getElementById('dealer-score').innerText = `Score: ${dealerScore}`;
-        document.getElementById('bankroll').innerText = `Bankroll: $${bankroll}`;
-        console.log("UI Updated");
-    }
+button:disabled {
+    background-color: #808080; /* Lighter grey for disabled buttons */
+    cursor: not-allowed;
+}
 
-    function checkForEndOfGame() {
-        console.log("Checking for end of game");
-        if (playerScore > 21) {
-            document.getElementById('status').innerText = 'Player busts! Dealer wins.';
-            bankroll -= currentBet;
-            endGame();
-        } else if (dealerScore > 21) {
-            document.getElementById('status').innerText = 'Dealer busts! Player wins.';
-            bankroll += currentBet;
-            endGame();
-        } else if (playerScore === 21) {
-            document.getElementById('status').innerText = 'Player hits Blackjack! Player wins.';
-            bankroll += currentBet;
-            endGame();
-        } else if (dealerScore === 21) {
-            document.getElementById('status').innerText = 'Dealer hits Blackjack! Dealer wins.';
-            bankroll -= currentBet;
-            endGame();
-        } else if (dealerScore >= 17 && dealerScore >= playerScore) {
-            document.getElementById('status').innerText = 'Dealer wins.';
-            bankroll -= currentBet;
-            endGame();
-        } else if (dealerScore >= 17 && dealerScore < playerScore) {
-            document.getElementById('status').innerText = 'Player wins.';
-            bankroll += currentBet;
-            endGame();
-        }
-    }
+input[type="number"] {
+    padding: 5px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    width: 60px;
+}
 
-    function endGame() {
-        console.log("End of game");
-        document.getElementById('btn-hit').disabled = true;
-        document.getElementById('btn-stand').disabled = true;
-        document.getElementById('btn-deal').disabled = false;
-        updateUI();
-    }
-
-    document.getElementById('btn-deal').addEventListener('click', () => {
-        console.log("Deal button clicked");
-        currentBet = parseInt(document.getElementById('bet-amount').value);
-        if (currentBet > bankroll) {
-            document.getElementById('status').innerText = 'Insufficient funds!';
-            return;
-        }
-        deck = shuffleDeck(createDeck());
-        dealInitialCards();
-        document.getElementById('status').innerText = '';
-        document.getElementById('btn-hit').disabled = false;
-        document.getElementById('btn-stand').disabled = false;
-        document.getElementById('btn-deal').disabled = true;
-    });
-
-    document.getElementById('btn-hit').addEventListener('click', () => {
-        console.log("Hit button clicked");
-        playerHand.push(deck.pop());
-        updateScores();
-        updateUI();
-        checkForEndOfGame();
-    });
-
-    document.getElementById('btn-stand').addEventListener('click', () => {
-        console.log("Stand button clicked");
-        while (dealerScore < 17) {
-            dealerHand.push(deck.pop());
-            updateScores();
-            updateUI();
-        }
-        checkForEndOfGame();
-    });
-});
+h1, h2 {
+    margin: 10px 0;
+    color: #ffffff; /* White text for headings */
+}
