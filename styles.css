@@ -21,11 +21,22 @@ body {
     margin-bottom: 20px;
 }
 
-#bankroll, #betting, .hand, #controls {
+#bankroll, #betting, #controls {
     margin: 10px 0;
 }
 
-.hand {
+#players {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.player {
+    margin-bottom: 20px;
+}
+
+.player .hand {
     padding: 10px;
     background-color: #4e4e4e; /* Another shade of grey for contrast */
     border-radius: 5px;
@@ -55,44 +66,8 @@ button {
     background-color: #606060; /* Dark grey for buttons */
     color: #ffffff; /* White text for buttons */
     cursor: pointer;
-    font-size: 1em;
 }
 
 button:disabled {
-    background-color: #808080; /* Lighter grey for disabled buttons */
-    cursor: not-allowed;
-}
-
-input[type="number"] {
-    padding: 5px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    width: 60px;
-}
-
-h1, h2 {
-    margin: 10px 0;
-    color: #ffffff; /* White text for headings */
-}
-
-#players {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 10px 0;
-}
-
-.player {
-    margin-bottom: 20px;
-}
-
-.player .hand {
-    background-color: #4e4e4e;
-    border-radius: 5px;
-}
-
-.player .cards {
-    display: flex;
-    justify-content: center;
-    margin: 10px 0;
+    background-color: #404040; /* Disabled button color */
 }
