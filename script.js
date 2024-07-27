@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             const playerDiv = document.createElement('div');
             playerDiv.classList.add('player');
+            playerDiv.id = `player-${i}`;
             playerDiv.innerHTML = `
                 <h2>Player ${i + 1}</h2>
                 <div class="hand" id="player-${i}-cards"></div>
