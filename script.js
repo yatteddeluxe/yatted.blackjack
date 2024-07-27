@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let deck, playerHand, dealerHand, playerScore, dealerScore, bankroll = 1000, currentBet;
 
     function createDeck() {
-        let suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+        let suits = ['hearts', 'diamonds', 'clubs', 'spades'];
         let values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         let deck = [];
         for (let suit of suits) {
@@ -60,9 +60,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         dealerScore = calculateHandValue(dealerHand);
     }
 
+    function getCardImage(card) {
+        return `images/cards/${card.value}_of_${card.suit}.png`;
+    }
+
     function updateUI() {
-        document.getElementById('player-cards').innerHTML = playerHand.map(card => `<div class="card">${card.value} ${card.suit}</div>`).join('');
-        document.getElementById('dealer-cards').innerHTML = dealerHand.map(card => `<div class="card">${card.value} ${card.suit}</div>`).join('');
+        document.getElementById('player-cards').innerHTML = playerHand.map(card => `<div class="card" style="background-image: url('${getCardImage(card)}');"></div>`).join('');
+        document.getElementById('dealer-cards').innerHTML = dealerHand.map(card => `<div class="card" style="background-image: url('${getCardImage(card)}');"></div>`).join('');
         document.getElementById('player-score').innerText = `Score: ${playerScore}`;
         document.getElementById('dealer-score').innerText = `Score: ${dealerScore}`;
         document.getElementById('bankroll').innerText = `Bankroll: $${bankroll}`;
